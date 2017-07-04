@@ -1,0 +1,32 @@
+{
+  "name": "web-bridge",
+  "version": "1.0.0",
+  "description": "A Gulp plugin to create Chromium Embedded Framework (CEF) / Python and WebView / C# wrappers for web apps written in JavaScript.",
+  "main": "index.js",
+  "directories": {
+    "doc": "docs",
+    "example": "examples",
+    "test": "test"
+  },
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/rambutan2000/webBridge.git"
+  },
+  "keywords": [
+    "python",
+    "c#",
+    "wrapper",
+    "CEF",
+    "webView",
+    "Gulp"
+  ],
+  "author": "Geordie Moffatt",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/rambutan2000/webBridge/issues"
+  },
+  "homepage": "https://github.com/rambutan2000/webBridge#readme"
+}
