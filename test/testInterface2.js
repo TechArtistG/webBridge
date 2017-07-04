@@ -16,17 +16,15 @@
             /*</PUB>*/
         }    
 
-        syncTestFn(val) {
+        testFn(val) {
             return("ret val");
         }
-
-        async asyncTestFn(val) {
-            
-        }
+        
 
         eventTest() {
             this.eventTrigger({});
         }
-
     }
+    $wbi.WBTestInterface = new(WBTestInterface);
+    
 }( window.$wbi = window.$wbi || {}));
