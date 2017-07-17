@@ -13,12 +13,21 @@
             this._MethodFilter = ["constructor", "hasOwnProperty", "valueOf", "toString", "toLocaleString", "isPrototypeOf", "propertyIsEnumerable"];
         }
         
-        _callSyncFunction(fnName, args) {
-            var retVal = this[fnName](args);
-            //this.syncFunctionReturn
+        _setProperty(propName, val) {
+            
         }
         
-        _syncFunctionReturn(retVal) {
+        _getProperty(propName) {
+            
+        }
+        
+        
+        _callSyncMethod(fnName, args) {
+            var retVal = this[fnName](args);
+            //this.syncFunctionReturn
+        }   
+        
+        _syncMethodReturn(retVal) {
             
         }
         
