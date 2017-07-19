@@ -3,7 +3,62 @@
     wbi.createInterface = function(objName, classDef) {  
         wbi[objName] = new classDef;
         wbi[objName]._iName = objName;        
-    }
+    };
+    
+    
+    wbi.iBase = class {
+        _format(formatted) {            
+            for (var i = 0; i < arguments.length; i++) {
+                var regexp = new RegExp('\\{'+i+'\\}', 'gi');
+                formatted = formatted.replace(regexp, arguments[i]);
+            }
+            return formatted;
+        }
+        
+        _getPropertyStr(pObj) {return ""};
+        _getMethodStr(mObj) {return ""};
+        _getInterface(iObj) {return ""};
+    };
+    
+    wbi.iPy = class extends wbi.iBase {
+                
+        _getPropertyStr(pObj) {
+            var pyStr = "\t";
+            
+            
+        }
+        
+        _getMethodStr(pObj) {
+            var pyStr = "\t";
+            
+        }
+        
+        _getInterface(iObj) {
+            var self = this;
+            // Class Header
+            var pyStr = "class " + iObj.interface + ":\n";
+            
+            // Properties
+            iObj.props.forEach(function(pObj){ pyStr += self._getPropertyStr(pObj); });
+            
+            
+            //for(var c = 0; c < iObj.props.length; c++) {
+            //    pyStr += _getPropertyStr(iObj.props[c]);
+            //}
+            
+            // Methods
+            iObj.props.forEach(function(mObj){ pyStr += self._getMethodStr(mObj); });
+            //for(var c = 0; c < iObj.methods.length; c++) {
+            //    pyStr += _getPropertyStr(iObj.methods[c]);
+            //}
+            
+            
+            // Class Footer
+            
+            return pyStr
+        }
+    };
+    
     
     wbi.i = class {
         constructor() {
@@ -25,7 +80,7 @@
         _callSyncMethod(fnName, args) {
             var retVal = this[fnName](args);
             //this.syncFunctionReturn
-        }   
+        }
         
         _syncMethodReturn(retVal) {
             
@@ -50,7 +105,7 @@
             while (obj = Reflect.getPrototypeOf(obj)) {
             let keys = Reflect.ownKeys(obj)            
             keys.forEach(function(k) {            	
-            	if(self._MethodFilter.indexOf(k) == -1 && !k.startsWith("_")) {
+            	if(self._MethodFilter.indexOf(k) == -1) {                 
               	methods.add(k);
               }
             });
@@ -62,9 +117,18 @@
             var props = [];
             for(var propName in this) {
             		if(!propName.startsWith("_")) {
-                	props.push(propName);
-                }                            
-            }            
+                    
+                    var pObj = {name:"",comment:"",type:""};
+                    pObj.name = propName;
+                    // Checking for metadaata
+                    if(this.hasOwnProperty("__" + propName)){
+                        pObj.comment = this["__" + propName].comment;
+                        pObj.type = this["__" + propName].type;
+                    }
+                    
+                	props.push(pObj);
+                }
+            }
             return(props);
         }
         
@@ -79,15 +143,50 @@
             
             // Methods
             retObj.methods = [];
-            self._getMethodNames().forEach(function(m) { 
-                var mObj = {};
-                mObj.name = m;
-                mObj.args = self._getMethodParamNames(self[m]);
-                retObj.methods.push(mObj);
+            
+            var methodNames = self._getMethodNames();
+            methodNames.forEach(function(m) { 
+                
+                if(!m.startsWith("_")) {
+                    var mObj = {name:"", comment:"", returnType:"", args:[]};
+                    mObj.name = m;
+                    
+                    var argNames = self._getMethodParamNames(self[m]);                    
+                    argNames.forEach(function(arg) {
+                        var aObj = {name:"", type:""};
+                        aObj.name = arg;
+                        mObj.args.push(aObj);
+                    });
+                    
+                    // Checking for metadaata
+                    var meta = {};                    
+                    if(methodNames.has("__" + m)){
+                        meta = self["__" + m]();
+                        mObj.comment = meta.comment;
+                        mObj.returnType = meta.returnType;
+                        
+                        mObj.args.forEach(function(arg){
+                            meta.args.forEach(function(marg){
+                                if(arg.name == marg.name) {
+                                    arg.type = marg.type;
+                                }
+                            });
+                        });
+                    }                    
+                    
+                    retObj.methods.push(mObj);                        
+                }                
             });
             return(retObj);
         }
-    }
+        
+        // =================================================
+        _getPythonInterface(iObj) {
+            
+            
+            
+        }
+    };
     
     
     wbi.test_class = class extends wbi.i{
@@ -117,3 +216,11 @@
     //this.test = new(wbi.test_class);
     
 }( window.wbi = window.wbi || {}));
+
+
+/*
+
+var pi = wbi.test._getInterface();
+console.log(pi);
+*/
+
