@@ -23,14 +23,24 @@
     wbi.iPy = class extends wbi.iBase {
                 
         _getPropertyStr(pObj) {
-            var pyStr = "\t";
-            
-            
+            var pyStr = "\t@property\n";
+            pyStr += "\tdef " + pObj.name + "(self):\n";
+            pyStr += "\t\treturn None\n\n";
+            pyStr += "\t@" + pObj.name + ".setter\n";
+            pyStr += "\tdef " + pObj.name + "(self, value):\n";
+            pyStr += "\t\tprint 'ph'\n\n";
+            return pyStr;
         }
         
-        _getMethodStr(pObj) {
-            var pyStr = "\t";
+        _getMethodStr(mObj) {
+            var pyStr = "\tdef " + mObj.name + "(self";
+            mObj.args.forEach(function(arg){
+                pyStr += ", " + arg.name; 
+            });
+            pyStr += "):\n";
+            pyStr += "\t\treturn None\n\n"
             
+            return pyStr;
         }
         
         _getInterface(iObj) {
@@ -38,23 +48,16 @@
             // Class Header
             var pyStr = "class " + iObj.interface + ":\n";
             
+            // Constructor
+            //var pyConstuctorStr = "\tdef __init__(self):\n";
+            
             // Properties
             iObj.props.forEach(function(pObj){ pyStr += self._getPropertyStr(pObj); });
             
-            
-            //for(var c = 0; c < iObj.props.length; c++) {
-            //    pyStr += _getPropertyStr(iObj.props[c]);
-            //}
-            
             // Methods
-            iObj.props.forEach(function(mObj){ pyStr += self._getMethodStr(mObj); });
-            //for(var c = 0; c < iObj.methods.length; c++) {
-            //    pyStr += _getPropertyStr(iObj.methods[c]);
-            //}
-            
+            iObj.methods.forEach(function(mObj){ pyStr += self._getMethodStr(mObj); });
             
             // Class Footer
-            
             return pyStr
         }
     };
@@ -124,8 +127,7 @@
                     if(this.hasOwnProperty("__" + propName)){
                         pObj.comment = this["__" + propName].comment;
                         pObj.type = this["__" + propName].type;
-                    }
-                    
+                    }                    
                 	props.push(pObj);
                 }
             }
@@ -173,18 +175,16 @@
                             });
                         });
                     }                    
-                    
                     retObj.methods.push(mObj);                        
-                }                
+                }
             });
             return(retObj);
         }
         
         // =================================================
-        _getPythonInterface(iObj) {
-            
-            
-            
+        _getPythonInterface() {
+            var iPy = new wbi.iPy;
+            return(iPy._getInterface(this._getInterface()));
         }
     };
     
@@ -218,9 +218,11 @@
 }( window.wbi = window.wbi || {}));
 
 
-/*
+
 
 var pi = wbi.test._getInterface();
-console.log(pi);
-*/
+var pyi = wbi.test._getPythonInterface();
+
+console.log(pyi);
+
 
