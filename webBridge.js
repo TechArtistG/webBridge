@@ -93,6 +93,7 @@
     wbi.test_class = class extends wbi.i{
     	constructor() {
       	super();
+        this.__testprop = {comment: "This is a test method", type: "number"};
       	this.testprop = 0;
       }
       

@@ -41,7 +41,7 @@ All Methods and properties of the new class will be exposed to the webBridge int
       }
       
       testFnA(argA, argB) {
-      	return(argA + argB);
+      	return(argA + argB.toString());
       }
     }
     wbi.createInterface("test", wbi.test_class);
@@ -49,7 +49,7 @@ All Methods and properties of the new class will be exposed to the webBridge int
 }( window.wbi = window.wbi || {}));
 ```
 
-Any properties or methods starting with a '_' will be treated as private and not exposed.
+Any properties or methods starting with '_' will be treated as private and not exposed.
 
 ```javascript
 (function( wbi ) {
@@ -63,7 +63,39 @@ Any properties or methods starting with a '_' will be treated as private and not
       }
       
       testFnA(argA, argB) {
-      	return(argA + argB);
+      	return(argA + argB.toString());
+      }
+      
+      _privateFN() {}
+    }
+    wbi.createInterface("test", wbi.test_class);
+
+}( window.wbi = window.wbi || {}));
+```
+
+Any properties or methods starting with  '__' will be treated as metadata for the public equivilent with a matching name.
+
+```javascript
+(function( wbi ) {
+
+    wbi.test_class = class extends wbi.i{
+    	constructor() {
+      	super();
+        
+        this.__testprop = {comment: "This is a test method", type: "number"};
+        this.testprop = 0;
+        this._privateProp = 0;
+      }
+      __testFnA() {return({
+          comment: "This is a test method",
+          returnType: "string",
+          args:[
+              {name: "argA", type:"string"},
+              {name: "argB", type:"number"}
+          ]
+      })};
+      testFnA(argA, argB) {
+      	return(argA + argB.toString());
       }
       
       _privateFN() {}
