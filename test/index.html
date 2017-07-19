@@ -1,0 +1,55 @@
+<html>
+    <head>
+        <script
+          src="https://code.jquery.com/jquery-3.2.1.slim.js"
+          integrity="sha256-tA8y0XqiwnpwmOIl3SGAcFl2RvxHjA8qp0+1uCGmRmg="
+          crossorigin="anonymous">
+        </script>
+        <script src="../webBridge.js"></script>
+    </head>
+    <bod>
+        test
+        
+        <script>
+        $(function() {
+            console.log( "ready!" );
+            
+            
+            class test_class extends wbi.i{
+                constructor() {
+                super();
+                this.__testprop = {comment: "This is a test method", type: "number"};
+                this.testprop = 0;
+              }
+
+              __testFnA() {return({
+                  comment: "This is a test method",
+                  returnType: "string",
+                  args:[
+                      {name: "argA", type:"string"},
+                      {name: "argB", type:"number"}
+                  ]
+              })};
+              testFnA(argA, argB) {
+
+              }
+
+              testFnB(argA, argB) {
+
+              }
+            }
+            wbi.createInterface("test", test_class);
+           
+            
+            
+            
+            //var pi = wbi.test._getInterface();
+            var pyi = wbi.test._getPythonInterface();
+
+            console.log(pyi);
+            
+        });
+        
+        </script>
+    </bod>
+</html>
