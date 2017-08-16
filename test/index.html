@@ -34,6 +34,14 @@
 
               }
 
+              __testFnB() {return({
+                  comment: "This is a test method",
+                  returnType: "number",
+                  args:[
+                      {name: "argA", type:"string"},
+                      {name: "argB", type:"number"}
+                  ]
+              })};
               testFnB(argA, argB) {
 
               }
@@ -45,8 +53,9 @@
             
             //var pi = wbi.test._getInterface();
             var pyi = wbi.test._getPythonInterface();
-
-            console.log(pyi);
+            var ucsi = wbi.test._getUnityCSharpInterface();
+            
+            console.log(ucsi);
             
         });
         
