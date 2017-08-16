@@ -7,6 +7,10 @@ As opposed to other general purpose RPCs such as grpc which give each platform a
 
 Another destinction is webBridge is focued on bridinging the gap between web apps and an embedded browser controls.
 
+# Status
+Still very WIP.  The Javascript interpetration is complete along with the basics of a Python generator implementation.
+
+
 # Usage
 webBridge defines a namepsace and base class in JavaScript:
 wbi = webBridge namepsace

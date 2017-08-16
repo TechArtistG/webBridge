@@ -36,7 +36,7 @@ class {0}(webBridgeCEFPython):
     # Constructor
     def __init__(self, brsr):
         _browser = brsr        
-    +
+    
     # Properties
     {1}
     
@@ -57,7 +57,7 @@ class {0}(webBridgeCEFPython):
 `;
             
             this._methodTemplate = `
-    def {0}(self, {1}):
+    def {0}({1}):
         next
 `;
         }
@@ -66,8 +66,14 @@ class {0}(webBridgeCEFPython):
             return this._format(this._propertyTemplate, pObj.name);           
         }
         
-        _getMethodStr(mObj) {            
-            return this._format(this._methodTemplate, mObj.name, "");            
+        _getMethodStr(mObj) {
+            var aStr = "";
+            if(mObj.args.length > 0){
+                    aStr = "self"
+                    mObj.args.forEach(function(aObj){ aStr += ", " + aObj.name});
+                }
+            
+            return this._format(this._methodTemplate, mObj.name, aStr);            
         }
         
         _getInterface(iObj) {            
@@ -85,6 +91,23 @@ class {0}(webBridgeCEFPython):
             // Class
             return this._format(this._classTemplate, iObj.interface, pStr, mStr);            
         }
+    };
+    
+    wbi.iUnityWebView = class extends wbi.iBase {
+        
+        constructor() {
+            super();
+            
+            this._classTemplate = ``;
+            
+            this._propertyTemplate = ``;
+            
+            this._methodTemplate = ``;
+        }
+        
+        _getPropertyStr(pObj) {}
+        _getMethodStr(mObj) {}
+        _getInterface(iObj) {}
     };
     
     
